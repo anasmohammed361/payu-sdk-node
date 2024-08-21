@@ -16,11 +16,13 @@ Install package:
 Next, you need to bootstrap using key and salt by following:
 key & salt can be found in your payu dashboard
 
-```js
-const payu = require('payu-sdk')({
-  key: '<payu_key>',
-  salt:  '<payu_salt>', // should be on server side only
-});
+```ts
+import Payu from "payu-sdk-ts";
+
+const payu = Payu({
+    key: "key",
+    salt:'salt' // should be on server side
+})
 ```
 
 It is recommended to keep key and salt as env variables so that they are not pushed to git accidentally
