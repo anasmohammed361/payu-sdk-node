@@ -2,14 +2,14 @@
   "name": "payu-sdk-ts",
   "version": "1.2.0",
   "description": "Payu's Node API",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/payu-india/payu-sdk-node"
+    "url": "https://github.com/anasmohammed361/payu-sdk-node"
   },
   "author": "",
   "keywords": [
