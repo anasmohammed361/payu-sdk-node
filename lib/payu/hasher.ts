@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
-const EMAIL_REGEX = /^(?=.{6,254}$)[A-Za-z0-9_\-\.]{1,64}\@[A-Za-z0-9_\-\.]+\.[A-Za-z]{2,}$/;
-const AMOUNT_REGEX = /^\d+(\.\d{1,2})?$/;
+const EMAIL_REGEX = /^(?=.{6,254}$)[A-Za-z0-9_\-\.]{1,64}\@[A-Za-z0-9_\-\.]+\.[A-Za-z]{2,}$/
+const AMOUNT_REGEX = /^\d+(\.\d{1,2})?$/
 
 export interface Params {
   key: string;
@@ -67,7 +67,7 @@ function generateHash({
 }: Params): string {
   validateParams({ key, salt, txnid, amount, productinfo, firstname, email, udf1, udf2, udf3, udf4, udf5 });
   const cryp = crypto.createHash('sha512');
-  const text = `${key}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}||||||${salt}`;
+  const text = key+'|'+txnid+'|'+amount+'|'+productinfo+'|'+firstname+'|'+email+'|'+ udf1+'|'+udf2+'|'+udf3+'|'+udf4+'|'+udf5+'||||||'+salt;
   cryp.update(text);
   return cryp.digest('hex');
 }
@@ -108,11 +108,14 @@ function validateHash(hash: string, {
   if (typeof status !== 'string') {
     throw new TypeError('TypeError: Param "status" required of type String');
   }
-  let reverseKeyString = `${salt}|${status}|${key}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|${udf1}|${udf2}|${udf3}|${udf4}|${udf5}|||||`;
+  const keyString = key+'|'+txnid+'|'+amount+'|'+productinfo+'|'+firstname+'|'+email+'|'+udf1+'|'+udf2+'|'+udf3+'|'+udf4+'|'+udf5+'|||||';
+  const keyArray = keyString.split('|');
+  const reverseKeyArray = keyArray.reverse();
+  let reverseKeyString = salt+'|'+status+'|'+reverseKeyArray.join('|');
   if (additionalCharges) {
-    reverseKeyString = `${additionalCharges}|${reverseKeyString}`;
+    reverseKeyString = additionalCharges + '|' + reverseKeyString
   }
-  const cryp = crypto.createHash('sha512');
+  const cryp = crypto.createHash('sha512'); 
   cryp.update(reverseKeyString);
   const calchash = cryp.digest('hex');
   return calchash === hash;
